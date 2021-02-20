@@ -2,12 +2,14 @@ package com.dust.paxos.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 存储端给客户端的响应信息
  */
 @Getter
 @Setter
+@ToString
 public class ResMessage {
 
     /**
@@ -25,9 +27,14 @@ public class ResMessage {
      */
     private String value;
 
-    /**
-     * 是否成功
-     */
-    private boolean success;
+    public static ResMessage create(MetaData metaData) {
+        return new ResMessage(metaData);
+    }
+
+    private ResMessage(MetaData metaData) {
+        this.lastRnd = metaData.getLastRnd();
+        this.vrnd = metaData.getVrnd();
+        this.value = metaData.getValue();
+    }
 
 }
