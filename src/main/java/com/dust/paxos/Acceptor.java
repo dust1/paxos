@@ -45,6 +45,17 @@ public class Acceptor extends Node {
     }
     
     /**
+     * 一般读取
+     * @param key
+     * @return
+     */
+    public ResMessage read(String key) {
+        MetaData metaData = data.getOrDefault(key, MetaData.empty(key));
+        data.put(key, metaData);
+        return metaData.read();
+    }
+
+    /**
      * 私有化构造函数方式通过new的方式创建对象
      */
     private Acceptor(String uuid) {

@@ -36,7 +36,7 @@ public class MetaData {
     }
 
     /**
-     * 读取节点数据
+     * 写前读取节点数据
      * @param rnd
      * @return 如果rnd数据小于lastRnd，则直接返回信息，具体逻辑交给客户端
      */
@@ -46,6 +46,13 @@ public class MetaData {
             this.lastRnd = rnd;
         }
         return res;
+    }
+
+    /**
+     * 一般读取
+     */
+    public ResMessage read() {
+        return ResMessage.create(this);
     }
 
     /**

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.dust.paxos.pojo.ResMessage;
 import com.dust.paxos.utils.Node;
+import com.dust.paxos.utils.RndTools;
 
 /**
  * 客户端
@@ -30,19 +34,39 @@ public class Proposer extends Node {
      * @return 是否已经有重复
      */
     public boolean addAcceptor(Acceptor acceptor) {
-        //TODO 检查该存储端是否已经存在，如果存在则返回false
-        return false;
+        String uuid = acceptor.getUuid();
+        if (aMap.containsKey(uuid)) {
+            return false;
+        }
+        aMap.put(uuid, acceptor);
+        return true;
     }
 
+    /**
+     * 根据key获取对应的value
+     * 根据多数派读写规则，如果出现多个不同的value，则以最新的值为准
+     * @param key
+     * @return
+     */
     public String get(String key) {
-        //TODO 从存储系统中获取某个key对应的value
-        return null;
+        int rnd = RndTools.getRnd();
+        List<ResMessage> resMessages = aMap.values().stream()
+            .map(a -> {
+                return a.get(rnd, key);
+            })
+            .collect(Collectors.toList());
+        if (resMessages.isEmpty()) {
+
+        }
+        ResMessage latestNode = resMessages.stream()
+            .max((r1, r2) -> {
+                return Integer.compare(r1.getVrnd(), r2.getVrnd());
+            }).get();
+        return latestNode.getValue();
     }
 
     public void set(String key, String newVal) {
         //TODO 设置下一个版本的key的value为newVal
     }
-
-    
 
 }

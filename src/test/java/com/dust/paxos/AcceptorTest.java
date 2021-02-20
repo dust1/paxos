@@ -51,33 +51,38 @@ public class AcceptorTest {
     @Test
     public void TwoTaskRun() {
         CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch latch1 = new CountDownLatch(2);
         String key = "Ben";
 
         Thread thread1 = new Thread(() -> {
             try {
                 latch.await();
+                ResMessage res = acceptor.get(1, key);
+                assertEquals(res.getLastRnd(), 0);
+                boolean ok = acceptor.set(key, "value", 1);
+                // 此时这里可能成功，可能失败
+                assertFalse(ok);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                latch1.countDown();
             }
-            ResMessage res = acceptor.get(1, key);
-            assertEquals(res.getLastRnd(), 0);
-            boolean ok = acceptor.set(key, "value", 1);
-            //此时这里写入失败
-            assertFalse(ok);
         });
         Thread thread2 = new Thread(() -> {
             try {
                 latch.await();
+                ResMessage res = acceptor.get(2, key);
+                assertEquals(res.getLastRnd(), 0);
+                boolean ok = acceptor.set(key, "value2", 2);
+                assertTrue(ok);
+                res = acceptor.get(2, key);
+                System.out.println(res.toString());
+                assertEquals(res.getValue(), "value2");
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+                latch1.countDown();
             }
-            ResMessage res = acceptor.get(2, key);
-            assertEquals(res.getLastRnd(), 0);
-            boolean ok = acceptor.set(key, "value2", 2);
-            assertTrue(ok);
-            res = acceptor.get(2, key);
-            System.out.println(res.toString());
-            assertEquals(res.getValue(), "value2");
         });
 
         thread1.start();
@@ -89,6 +94,13 @@ public class AcceptorTest {
             e.printStackTrace();
         }
         latch.countDown();
+
+        try {
+            latch1.await();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }
