@@ -2,6 +2,7 @@ package com.dust.paxos.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 存储在存储端的数据对象
@@ -9,6 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class MetaData {
     
     private String key;

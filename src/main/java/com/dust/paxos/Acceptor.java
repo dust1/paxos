@@ -2,6 +2,7 @@ package com.dust.paxos;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.dust.paxos.pojo.MetaData;
 import com.dust.paxos.pojo.ResMessage;
@@ -61,6 +62,11 @@ public class Acceptor extends Node {
     private Acceptor(String uuid) {
         super(uuid);
         this.data = new HashMap<>();
+    }
+
+    @Override
+    public String toString() {
+        return data.values().stream().map(MetaData::toString).collect(Collectors.joining(";")).toString();
     }
 
 }

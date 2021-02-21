@@ -2,7 +2,6 @@ package com.dust.paxos;
 
 import static org.junit.Assert.*;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CountDownLatch;

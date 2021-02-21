@@ -42,6 +42,11 @@ public class Proposer extends Node {
         return true;
     }
 
+    public Proposer appendAcceptor(Acceptor acceptor) {
+        addAcceptor(acceptor);
+        return this;
+    }
+
     /**
      * 根据key获取对应的value
      * 根据多数派读写规则，如果出现多个不同的value，则以最新的值为准
@@ -49,14 +54,13 @@ public class Proposer extends Node {
      * @return
      */
     public String get(String key) {
-        int rnd = RndTools.getRnd();
         List<ResMessage> resMessages = aMap.values().stream()
             .map(a -> {
-                return a.get(rnd, key);
+                return a.read(key);
             })
             .collect(Collectors.toList());
         if (resMessages.isEmpty()) {
-
+            return null;
         }
         ResMessage latestNode = resMessages.stream()
             .max((r1, r2) -> {
@@ -65,8 +69,36 @@ public class Proposer extends Node {
         return latestNode.getValue();
     }
 
-    public void set(String key, String newVal) {
-        //TODO 设置下一个版本的key的value为newVal
+    /**
+     * 写入
+     * @param key
+     * @param newVal
+     * @return
+     */
+    public boolean set(String key, String newVal) {
+        int rnd = RndTools.getRnd();
+        //写前读取
+        List<ResMessage> resMessages = aMap.values().stream()
+        .map(a -> {
+            return a.get(rnd, key);
+        })
+        .collect(Collectors.toList());
+        ResMessage latestNode = resMessages.stream()
+            .max((r1, r2) -> {
+                return Integer.compare(r1.getLastRnd(), r2.getLastRnd());
+            }).get();
+        if (latestNode.getLastRnd() > rnd) {
+            //恢复数据
+            aMap.values().stream().map(a -> {
+                return a.set(key, latestNode.getValue(), latestNode.getLastRnd());
+            });
+            return false;
+        }
+
+        return aMap.values().stream().map(a -> {
+            return a.set(key, newVal, rnd);
+        })
+        .allMatch(b -> b);
     }
 
 }
