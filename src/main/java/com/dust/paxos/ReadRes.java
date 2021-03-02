@@ -18,19 +18,27 @@ public class ReadRes {
 
     private boolean success;
 
-    public static ReadRes fail() {
-        return new ReadRes(-1, null, -1, false);
+    private String uuid;
+
+    public static ReadRes fail( MetaData metaData, String uuid) {
+        return new ReadRes(metaData.getLastRnd(), metaData.getValue(),
+                metaData.getVrnd(), false, uuid);
     }
 
-    public static ReadRes byMetaData(MetaData metaData) {
-        return new ReadRes(metaData.getLastRnd(), metaData.getValue(), metaData.getVrnd(), true);
+    public static ReadRes byMetaData(MetaData metaData, String uuid) {
+        return new ReadRes(metaData.getLastRnd(),
+                metaData.getValue(), metaData.getVrnd(),
+                true, uuid);
     }
 
-    private ReadRes(int lastRnd, String value, int vrnd, boolean success) {
+    private ReadRes(int lastRnd, String value,
+                    int vrnd, boolean success,
+                    String uuid) {
         this.lastRnd = lastRnd;
         this.value = value;
         this.vrnd = vrnd;
         this.success = success;
+        this.uuid = uuid;
     }
 
 }

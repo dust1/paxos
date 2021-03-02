@@ -14,6 +14,10 @@ public class Acceptor {
         this.keyWithMetaData = new HashMap<>();
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
     /**
      * 预先读取
      * @param key 读取关键字
@@ -24,9 +28,9 @@ public class Acceptor {
         MetaData metaData = keyWithMetaData.getOrDefault(key, MetaData.empty(key));
         keyWithMetaData.put(key, metaData);
         if (metaData.read(rnd)) {
-            return ReadRes.byMetaData(metaData);
+            return ReadRes.byMetaData(metaData, uuid);
         }
-        return ReadRes.fail();
+        return ReadRes.fail(metaData, uuid);
     }
 
     /**
@@ -36,9 +40,9 @@ public class Acceptor {
      */
     public GetRes get(String key) {
         if (keyWithMetaData.containsKey(key)) {
-            return GetRes.byMetaData(keyWithMetaData.get(key));
+            return GetRes.byMetaData(keyWithMetaData.get(key), uuid);
         }
-        return GetRes.empty(key);
+        return GetRes.empty(key, uuid);
     }
 
     /**
