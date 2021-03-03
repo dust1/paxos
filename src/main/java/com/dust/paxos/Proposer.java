@@ -38,6 +38,7 @@ public class Proposer {
         List<List<GetRes>> lists = acceptorMap.values()
                 .stream().map(a -> a.get(key))
                 .filter(GetRes::isSuccess)
+                .filter(g -> Objects.nonNull(g.getValue()))
                 .collect(Collectors.groupingBy(GetRes::getValue))
                 .values()
                 .stream()
@@ -93,8 +94,9 @@ public class Proposer {
      * 给客户端注册Acceptor
      * @param acceptor
      */
-    public synchronized void appendAcceptor(Acceptor acceptor) {
+    public synchronized Proposer appendAcceptor(Acceptor acceptor) {
         acceptorMap.put(acceptor.getUuid(), acceptor);
+        return this;
     }
 
     private boolean write(String key, String value, int rnd) {

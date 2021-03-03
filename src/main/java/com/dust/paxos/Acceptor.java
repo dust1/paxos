@@ -9,6 +9,10 @@ public class Acceptor {
 
     private String uuid;
 
+    public static Acceptor create(String uuid) {
+        return new Acceptor(uuid);
+    }
+
     private Acceptor(String uuid) {
         this.uuid = uuid;
         this.keyWithMetaData = new HashMap<>();

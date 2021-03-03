@@ -11,6 +11,7 @@ public class ProposerTest {
 
     private Proposer p1;
     private Proposer p2;
+
     private Acceptor a1;
     private Acceptor a2;
     private Acceptor a3;
