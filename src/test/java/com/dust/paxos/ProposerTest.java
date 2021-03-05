@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.CountDownLatch;
 
+import com.dust.paxos.component.Acceptor;
+import com.dust.paxos.component.Proposer;
 import org.junit.Before;
 import org.junit.Test;
 
