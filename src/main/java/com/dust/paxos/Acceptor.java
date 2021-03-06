@@ -3,6 +3,10 @@ package com.dust.paxos;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 提案接受者/选举者/存储端
+ * 通过对存储端某个值的修改，使得存储端超过半数都“同意”这次修改，那么此次修改就正式生效
+ */
 public class Acceptor {
 
     private Map<String, MetaData> keyWithMetaData;

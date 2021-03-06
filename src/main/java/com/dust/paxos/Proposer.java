@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * 提案发起者/客户端
+ */
 public class Proposer {
 
     private static AtomicInteger rndSeed;
