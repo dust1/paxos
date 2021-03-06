@@ -1,4 +1,4 @@
-package com.dust.paxos.component;
+package com.dust.paxos.core;
 
 import com.dust.paxos.GetRes;
 import com.dust.paxos.ReadRes;
@@ -80,7 +80,7 @@ public class Proposer {
                 ).getOrDefault(
                         Boolean.TRUE, Collections.emptyList()
                 );
-        if (successList.size() < (acceptorMap.size() / 2)) {
+        if (successList.size() < (acceptorMap.size() / 2 + 1)) {
             return false;
         }
 

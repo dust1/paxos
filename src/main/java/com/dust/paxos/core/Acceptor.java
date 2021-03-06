@@ -1,4 +1,4 @@
-package com.dust.paxos.component;
+package com.dust.paxos.core;
 
 import com.dust.paxos.GetRes;
 import com.dust.paxos.MetaData;
