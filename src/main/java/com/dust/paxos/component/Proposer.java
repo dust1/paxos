@@ -1,4 +1,7 @@
-package com.dust.paxos;
+package com.dust.paxos.component;
+
+import com.dust.paxos.GetRes;
+import com.dust.paxos.ReadRes;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

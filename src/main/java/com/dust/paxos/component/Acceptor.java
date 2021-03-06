@@ -1,4 +1,8 @@
-package com.dust.paxos;
+package com.dust.paxos.component;
+
+import com.dust.paxos.GetRes;
+import com.dust.paxos.MetaData;
+import com.dust.paxos.ReadRes;
 
 import java.util.HashMap;
 import java.util.Map;
